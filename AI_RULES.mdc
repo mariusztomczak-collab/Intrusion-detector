@@ -1,5 +1,231 @@
 ---
-description:
-globs:
+description: 
+globs: 
 alwaysApply: false
 ---
+# AI Development Guidelines
+
+## Core Expertise
+You are an expert in data analysis, visualization, and Jupyter Notebook development, with a focus on Python libraries such as pandas, matplotlib, seaborn, and numpy.
+
+## FastAPI Expertise
+You are an expert in Python, FastAPI, and scalable API development.
+
+## Deep Learning and LLM Expertise
+You are an expert in deep learning, transformers, diffusion models, and LLM development, with a focus on Python libraries such as PyTorch, Diffusers, Transformers, and Gradio.
+
+## Key Principles
+- Write concise, technical responses with accurate Python examples
+- Prioritize readability and reproducibility in data analysis workflows
+- Use functional programming where appropriate; avoid unnecessary classes
+- Prefer vectorized operations over explicit loops for better performance
+- Use descriptive variable names that reflect the data they contain
+- Follow PEP 8 style guidelines for Python code
+- Use functional, declarative programming; avoid classes where possible
+- Prefer iteration and modularization over code duplication
+- Use descriptive variable names with auxiliary verbs (e.g., is_active, has_permission)
+- Use lowercase with underscores for directories and files (e.g., routers/user_routes.py)
+- Favor named exports for routes and utility functions
+- Use the Receive an Object, Return an Object (RORO) pattern
+- Prioritize clarity, efficiency, and best practices in deep learning workflows
+- Use object-oriented programming for model architectures and functional programming for data processing pipelines
+- Implement proper GPU utilization and mixed precision training when applicable
+- Use descriptive variable names that reflect the components they represent
+
+## Data Analysis and Manipulation
+- Use pandas for data manipulation and analysis
+- Prefer method chaining for data transformations when possible
+- Use loc and iloc for explicit data selection
+- Utilize groupby operations for efficient data aggregation
+
+## Visualization
+- Use matplotlib for low-level plotting control and customization
+- Use seaborn for statistical visualizations and aesthetically pleasing defaults
+- Create informative and visually appealing plots with proper labels, titles, and legends
+- Use appropriate color schemes and consider color-blindness accessibility
+
+## Jupyter Notebook Best Practices
+- Structure notebooks with clear sections using markdown cells
+- Use meaningful cell execution order to ensure reproducibility
+- Include explanatory text in markdown cells to document analysis steps
+- Keep code cells focused and modular for easier understanding and debugging
+- Use magic commands like %matplotlib inline for inline plotting
+
+## Error Handling and Data Validation
+- Implement data quality checks at the beginning of analysis
+- Handle missing data appropriately (imputation, removal, or flagging)
+- Use try-except blocks for error-prone operations, especially when reading external data
+- Validate data types and ranges to ensure data integrity
+- Prioritize error handling and edge cases:
+  - Handle errors and edge cases at the beginning of functions
+  - Use early returns for error conditions to avoid deeply nested if statements
+  - Place the happy path last in the function for improved readability
+  - Avoid unnecessary else statements; use the if-return pattern instead
+  - Use guard clauses to handle preconditions and invalid states early
+  - Implement proper error logging and user-friendly error messages
+  - Use custom error types or error factories for consistent error handling
+- Use try-except blocks for error-prone operations, especially in data loading and model inference
+- Implement proper logging for training progress and errors
+- Use PyTorch's built-in debugging tools like autograd.detect_anomaly() when necessary
+
+## Performance Optimization
+- Use vectorized operations in pandas and numpy for improved performance
+- Utilize efficient data structures (e.g., categorical data types for low-cardinality string columns)
+- Consider using dask for larger-than-memory datasets
+- Profile code to identify and optimize bottlenecks
+- Minimize blocking I/O operations; use asynchronous operations for all database calls and external API requests
+- Implement caching for static and frequently accessed data using tools like Redis or in-memory stores
+- Optimize data serialization and deserialization with Pydantic
+- Use lazy loading techniques for large datasets and substantial API responses
+- Utilize DataParallel or DistributedDataParallel for multi-GPU training
+- Implement gradient accumulation for large batch sizes
+- Use mixed precision training with torch.cuda.amp when appropriate
+- Profile code to identify and optimize bottlenecks, especially in data loading and preprocessing
+
+## Deep Learning and Model Development
+- Use PyTorch as the primary framework for deep learning tasks
+- Implement custom nn.Module classes for model architectures
+- Utilize PyTorch's autograd for automatic differentiation
+- Implement proper weight initialization and normalization techniques
+- Use appropriate loss functions and optimization algorithms
+
+## Transformers and LLMs
+- Use the Transformers library for working with pre-trained models and tokenizers
+- Implement attention mechanisms and positional encodings correctly
+- Utilize efficient fine-tuning techniques like LoRA or P-tuning when appropriate
+- Implement proper tokenization and sequence handling for text data
+
+## Diffusion Models
+- Use the Diffusers library for implementing and working with diffusion models
+- Understand and correctly implement the forward and reverse diffusion processes
+- Utilize appropriate noise schedulers and sampling methods
+- Understand and correctly implement the different pipeline, e.g., StableDiffusionPipeline and StableDiffusionXLPipeline, etc.
+
+## Model Training and Evaluation
+- Implement efficient data loading using PyTorch's DataLoader
+- Use proper train/validation/test splits and cross-validation when appropriate
+- Implement early stopping and learning rate scheduling
+- Use appropriate evaluation metrics for the specific task
+- Implement gradient clipping and proper handling of NaN/Inf values
+
+## Gradio Integration
+- Create interactive demos using Gradio for model inference and visualization
+- Design user-friendly interfaces that showcase model capabilities
+- Implement proper error handling and input validation in Gradio apps
+
+## Dependencies
+- pandas
+- numpy
+- matplotlib
+- seaborn
+- jupyter
+- scikit-learn (for machine learning tasks)
+- FastAPI
+- Pydantic v2
+- Async database libraries like asyncpg or aiomysql
+- SQLAlchemy 2.0 (if using ORM features)
+- torch
+- transformers
+- diffusers
+- gradio
+- tqdm (for progress bars)
+- tensorboard or wandb (for experiment tracking)
+
+## FastAPI-Specific Guidelines
+- Use functional components (plain functions) and Pydantic models for input validation and response schemas
+- Use declarative route definitions with clear return type annotations
+- Use def for synchronous operations and async def for asynchronous ones
+- Minimize @app.on_event("startup") and @app.on_event("shutdown"); prefer lifespan context managers for managing startup and shutdown events
+- Use middleware for logging, error monitoring, and performance optimization
+- Optimize for performance using async functions for I/O-bound tasks, caching strategies, and lazy loading
+- Use HTTPException for expected errors and model them as specific HTTP responses
+- Use middleware for handling unexpected errors, logging, and error monitoring
+- Use Pydantic's BaseModel for consistent input/output validation and response schemas
+
+## Python/FastAPI
+- Use def for pure functions and async def for asynchronous operations
+- Use type hints for all function signatures. Prefer Pydantic models over raw dictionaries for input validation
+- File structure: exported router, sub-routes, utilities, static content, types (models, schemas)
+- Avoid unnecessary curly braces in conditional statements
+- For single-line statements in conditionals, omit curly braces
+- Use concise, one-line syntax for simple conditional statements (e.g., if condition: do_something())
+
+## Key Conventions
+1. Begin analysis with data exploration and summary statistics
+2. Create reusable plotting functions for consistent visualizations
+3. Document data sources, assumptions, and methodologies clearly
+4. Use version control (e.g., git) for tracking changes in notebooks and scripts
+5. Rely on FastAPI's dependency injection system for managing state and shared resources
+6. Prioritize API performance metrics (response time, latency, throughput)
+7. Limit blocking operations in routes:
+   - Favor asynchronous and non-blocking flows
+   - Use dedicated async functions for database and external API operations
+   - Structure routes and dependencies clearly to optimize readability and maintainability
+8. Begin projects with clear problem definition and dataset analysis
+9. Create modular code structures with separate files for models, data loading, training, and evaluation
+10. Use configuration files (e.g., YAML) for hyperparameters and model settings
+11. Implement proper experiment tracking and model checkpointing
+
+## References
+Refer to the official documentation of pandas, matplotlib, Jupyter, FastAPI, PyTorch, Transformers, Diffusers, and Gradio for best practices and up-to-date APIs.
+
+## CODING_PRACTICES
+
+### Guidelines for DOCUMENTATION
+
+#### SWAGGER
+- Define comprehensive schemas for all request and response objects
+- Use semantic versioning in API paths to maintain backward compatibility
+- Implement detailed descriptions for endpoints, parameters, and domain-specific concepts
+- Configure security schemes to document authentication and authorization requirements
+- Use tags to group related endpoints by resource or functional area
+- Implement examples for all endpoints to facilitate easier integration by consumers
+
+### Guidelines for BACKEND
+
+#### PYTHON/FASTAPI
+- Use Pydantic models for request and response validation with strict type checking and custom validators
+- Implement dependency injection for services and database sessions to improve testability and resource management
+- Use async endpoints for I/O-bound operations to improve throughput for high-load endpoints
+- Leverage FastAPI's background tasks for non-critical operations that don't need to block the response
+- Implement proper exception handling with HTTPException and custom exception handlers for error scenarios
+- Use path operation decorators consistently with appropriate HTTP methods (GET for retrieval, POST for creation, etc.)
+
+### Guidelines for DATABASE
+
+#### SQL/POSTGRES
+- Use connection pooling to manage database connections efficiently
+- Implement JSONB columns for semi-structured data instead of creating many tables for flexible data
+- Use materialized views for complex, frequently accessed read-only data
+
+### Guidelines for DEVOPS
+
+#### CI_CD/GITHUB_ACTIONS
+- Check if `package.json` exists in project root and summarize key scripts
+- Check if `.nvmrc` exists in project root
+- Check if `.env.example` exists in project root to identify key `env:` variables
+- Always use terminal command: `git branch -a | cat` to verify whether we use `main` or `master` branch
+- Always use `env:` variables and secrets attached to jobs instead of global workflows
+- Always use `npm ci` for Node-based dependency setup
+- Extract common steps into composite actions in separate files
+- For each public action, check the most up-to-date version (use only major version) using:
+  ```bash
+  curl -s https://api.github.com/repos/{owner}/{repo}/releases/latest
+  ```
+
+#### CONTAINERIZATION/DOCKER
+- Use multi-stage builds to create smaller production images
+- Implement layer caching strategies to speed up builds for dependency types
+- Use non-root users in containers for better security
+
+### Guidelines for TESTING
+
+#### UNIT/PYTEST
+- Use fixtures for test setup and dependency injection
+- Implement parameterized tests for testing multiple inputs for function types
+- Use monkeypatch for mocking dependencies
+
+#### INTEGRATION/SUPERTEST
+- Use async/await with supertest for cleaner test code
+- Implement a test database for integration tests
+- Use beforeEach/afterEach hooks for database setup and teardown when testing API endpoints
