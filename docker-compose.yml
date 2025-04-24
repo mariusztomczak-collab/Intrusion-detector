@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"  # FastAPI
+      - "7860:7860"  # Gradio
+    volumes:
+      - .:/app
+      - ./model_artifacts:/app/model_artifacts
+      - ./mlruns:/app/mlruns
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/intrusion_detector
+      - MLFLOW_TRACKING_URI=file:/app/mlruns
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=intrusion_detector
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data: 
