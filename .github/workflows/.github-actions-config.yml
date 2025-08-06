@@ -1,0 +1,104 @@
+# GitHub Actions Configuration for Intrusion Detector
+# This file documents the CI/CD workflow structure and settings
+
+workflow:
+  name: "Pull Request CI/CD"
+  description: "Comprehensive CI/CD pipeline for pull requests"
+
+  triggers:
+    - pull_request:
+        branches: [main, master]
+        types: [opened, synchronize, reopened]
+
+jobs:
+  lint:
+    description: "Code quality and formatting checks"
+    tools:
+      - black: "Code formatting"
+      - isort: "Import sorting"
+      - flake8: "Code quality"
+      - mypy: "Type checking"
+    timeout: "10 minutes"
+
+  unit-tests:
+    description: "Unit tests with coverage collection"
+    strategy: "matrix (api, ml, ui, core)"
+    parallel: true
+    coverage: true
+    timeout: "15 minutes"
+
+  integration-tests:
+    description: "Integration tests"
+    dependencies: [lint, unit-tests]
+    timeout: "20 minutes"
+
+  security-scan:
+    description: "Security analysis"
+    tools:
+      - bandit: "Python security scanner"
+      - safety: "Dependency vulnerability check"
+    timeout: "10 minutes"
+
+  build-docker:
+    description: "Docker image building and testing"
+    dependencies: [lint, unit-tests]
+    images:
+      - api: "Dockerfile.prod"
+      - ui: "Dockerfile.ui"
+    timeout: "15 minutes"
+
+  status-comment:
+    description: "PR status comment generation"
+    dependencies:
+      [lint, unit-tests, integration-tests, security-scan, build-docker]
+    condition: "always && pull_request"
+    features:
+      - automatic_comment: true
+      - status_report: true
+      - coverage_link: true
+
+environment:
+  python_version: "3.12"
+  cache_strategy: "pip"
+
+  dependencies:
+    - fastapi
+    - uvicorn
+    - pydantic
+    - supabase
+    - mlflow
+    - scikit-learn
+    - pandas
+    - numpy
+    - redis
+    - pytest
+    - black
+    - isort
+    - flake8
+    - mypy
+
+  dev_dependencies:
+    - pytest-cov
+    - pytest-xdist
+    - bandit
+    - safety
+
+coverage:
+  provider: "codecov"
+  reports:
+    - xml
+    - html
+    - term-missing
+  flags:
+    - unittests
+    - integration
+
+artifacts:
+  - test_results: "JUnit XML reports"
+  - coverage_reports: "HTML and XML coverage"
+  - security_reports: "Safety and Bandit reports"
+  - docker_images: "Built Docker images"
+
+notifications:
+  - pr_comment: "Status report with coverage"
+  - codecov: "Coverage trends and reports"
