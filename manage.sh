@@ -1,0 +1,1 @@
+scripts/deployment/manage_app.sh

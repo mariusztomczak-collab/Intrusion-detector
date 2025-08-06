@@ -1,0 +1,1 @@
+scripts/deployment/stop_app.sh

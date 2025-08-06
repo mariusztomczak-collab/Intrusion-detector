@@ -1,93 +1,202 @@
-# Network Intrusion Detection System
+# 🛡️ Intrusion Detector
 
-A machine learning-based system for detecting malicious network traffic using the KD-NSL dataset.
+A machine learning-based network intrusion detection system with a modern web interface, built with FastAPI, Gradio, and Supabase.
 
-## Repository Structure
+[![CI/CD](https://github.com/mariusztomczak-collab/Intrusion-detector/workflows/Pull%20Request%20CI%2FCD/badge.svg)](https://github.com/mariusztomczak-collab/Intrusion-detector/actions)
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Python 3.12+
+- Docker & Docker Compose
+- Supabase account
+
+### Development Setup
+```bash
+# Clone the repository
+git clone https://github.com/mariusztomczak-collab/Intrusion-detector.git
+cd Intrusion-detector
+
+# Install dependencies
+pip install -e ".[dev]"
+
+# Start development environment
+./manage.sh start
+
+# Access the application
+# UI: http://localhost:7860
+# API: http://localhost:8000
+# API Docs: http://localhost:8000/docs
+```
+
+### Production Deployment
+```bash
+# Use production configuration
+docker-compose -f docker-compose.prod.yml up -d
+
+# Or follow the detailed deployment guide
+# See: docs/deployment/DEPLOYMENT_GUIDE.md
+```
+
+## 📁 Project Structure
 
 ```
 intrusion-detector/
-├── app/                    # Application code
-│   ├── api/               # FastAPI application
-│   │   ├── endpoints/     # API endpoints
-│   │   ├── middleware/    # Custom middleware
-│   │   └── schemas/       # Pydantic models
-│   ├── core/              # Core functionality
-│   │   ├── config/        # Configuration
-│   │   └── supabase/      # Supabase client
-│   └── ml/                # ML pipeline
-│       ├── models/        # Model definitions
-│       ├── preprocessing/ # Data preprocessing
-│       └── training/      # Model training
-├── data/                  # Data directory
-│   ├── raw/              # Raw data files
-│   ├── processed/        # Processed data files
-│   └── test/             # Test data
-├── docs/                  # Documentation
-│   ├── api/              # API documentation
-│   └── db/               # Database documentation
-├── notebooks/            # Jupyter notebooks
-├── scripts/              # Utility scripts
-├── supabase/            # Supabase configuration
-│   └── migrations/      # Database migrations
-├── tests/               # Test files
-│   ├── api/            # API tests
-│   ├── ml/             # ML pipeline tests
-│   └── integration/    # Integration tests
-├── .env.example        # Example environment variables
-├── .gitignore          # Git ignore file
-├── docker-compose.yml  # Docker compose configuration
-├── Dockerfile          # Docker configuration
-├── Makefile           # Build and development commands
-├── pyproject.toml     # Python project configuration
-├── README.md          # This file
-└── requirements.txt    # Python dependencies
+├── 📁 src/                    # Application source code
+│   ├── 📁 api/               # FastAPI backend
+│   ├── 📁 ui/                # Gradio frontend
+│   ├── 📁 ml/                # Machine learning components
+│   └── 📁 core/              # Core utilities
+├── 📁 tests/                 # Test suite
+├── 📁 docs/                  # Documentation
+│   ├── 📁 deployment/        # Deployment guides
+│   ├── 📁 development/       # Development guides
+│   ├── 📁 api/              # API documentation
+│   └── 📁 architecture/     # Architecture docs
+├── 📁 config/               # Configuration files
+│   ├── 📁 production/       # Production configs
+│   └── 📁 development/      # Development configs
+├── 📁 scripts/              # Utility scripts
+│   ├── 📁 deployment/       # Deployment scripts
+│   ├── 📁 development/      # Development scripts
+│   └── 📁 maintenance/      # Maintenance scripts
+├── 📁 database/             # Database files
+│   └── 📁 migrations/       # SQL migrations
+├── 📁 artifacts/            # ML model files
+├── 📁 supabase/             # Supabase configuration
+└── 📁 .github/              # GitHub Actions workflows
 ```
 
-## Setup
+## 🏗️ Architecture
 
-1. Create and activate a virtual environment:
-  ```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
+### Technology Stack
+- **Backend**: FastAPI (Python)
+- **Frontend**: Gradio (Python)
+- **Database**: PostgreSQL + Supabase
+- **Authentication**: Supabase Auth
+- **ML Framework**: Scikit-learn
+- **Containerization**: Docker
+- **CI/CD**: GitHub Actions
 
-2. Install dependencies:
+### Key Features
+- 🔐 **Secure Authentication** with Supabase
+- 🤖 **ML-Powered Detection** using Logistic Regression
+- 📊 **Real-time Analysis** with caching
+- 🐳 **Containerized Deployment** with Docker
+- 🔄 **CI/CD Pipeline** with automated testing
+- 📈 **Comprehensive Monitoring** with health checks
+
+## 📚 Documentation
+
+### 📖 Guides
+- **[Deployment Guide](docs/deployment/DEPLOYMENT_GUIDE.md)** - Production deployment instructions
+- **[Model Distribution](docs/deployment/MODEL_DISTRIBUTION_SOLUTION.md)** - ML model distribution solution
+- **[Development Guide](docs/development/)** - Development setup and guidelines
+- **[API Documentation](docs/api/)** - API design and implementation
+- **[Architecture](docs/architecture/)** - System architecture and design
+
+### 🔧 Configuration
+- **[Production Config](config/production/)** - Production environment configuration
+- **[Development Config](config/development/)** - Development environment configuration
+
+## 🧪 Testing
+
+### Run Tests
 ```bash
-pip install -r requirements.txt
+# Unit tests
+pytest tests/unit/
+
+# Integration tests
+pytest tests/integration/
+
+# All tests with coverage
+pytest --cov=src --cov-report=html
 ```
 
-3. Set up environment variables:
+### CI/CD Pipeline
+The project includes a comprehensive CI/CD pipeline with:
+- ✅ Code linting (Black, isort, flake8, mypy)
+- ✅ Unit and integration tests
+- ✅ Security scanning (Bandit, Safety)
+- ✅ Docker image building
+- ✅ Automated PR status comments
+
+## 🚀 Deployment
+
+### Development
 ```bash
-cp .env.example .env
-# Edit .env with your configuration
+# Start all services
+./manage.sh start
+
+# Check status
+./manage.sh status
+
+# Stop services
+./manage.sh stop
 ```
 
-4. Start the services:
+### Production
 ```bash
-# Start MLflow server
-mlflow server --host 0.0.0.0 --port 5000
+# Deploy with Docker Compose
+docker-compose -f docker-compose.prod.yml up -d
 
-# Start FastAPI application
-uvicorn app.api.main:app --reload --host 0.0.0.0 --port 8000
+# Or use the deployment scripts
+./scripts/deployment/start_app.sh
 ```
 
-## Development
+## 🔧 Configuration
 
-- Run tests: `make test`
-- Format code: `make format`
-- Lint code: `make lint`
+### Environment Variables
+```bash
+# Required
+SUPABASE_URL=your_supabase_url
+SUPABASE_KEY=your_supabase_anon_key
 
-## API Documentation
+# Optional
+MLFLOW_TRACKING_URI=local  # Use local models
+APP_ENV=production
+DEBUG=false
+```
 
-Once the application is running, visit:
-- Swagger UI: http://localhost:8000/docs
-- ReDoc: http://localhost:8000/redoc
+### Model Configuration
+The system supports multiple model loading strategies:
+1. **MLflow Model Registry** (for developers)
+2. **Local joblib files** (for end users)
+3. **Fallback pickle files** (backup)
 
-## MLflow
+## 🤝 Contributing
 
-The MLflow server is available at:
-- MLflow UI: http://localhost:5000
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## License
+### Development Guidelines
+- Follow PEP 8 style guidelines
+- Write comprehensive tests
+- Update documentation
+- Use conventional commit messages
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+- 📖 **Documentation**: Check the [docs/](docs/) directory
+- 🐛 **Issues**: Report bugs via [GitHub Issues](https://github.com/mariusztomczak-collab/Intrusion-detector/issues)
+- 💬 **Discussions**: Join the [GitHub Discussions](https://github.com/mariusztomczak-collab/Intrusion-detector/discussions)
+
+## 🏆 Acknowledgments
+
+- Built with [FastAPI](https://fastapi.tiangolo.com/)
+- UI powered by [Gradio](https://gradio.app/)
+- Authentication by [Supabase](https://supabase.com/)
+- ML framework: [Scikit-learn](https://scikit-learn.org/)
+
+---
+
+**Made with ❤️ for network security**

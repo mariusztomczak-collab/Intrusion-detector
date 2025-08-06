@@ -17,7 +17,7 @@ No additional configuration is required.
 ## Model Information:
 - Model Name: sample_intrusion_detector
 - Version: 1.0.0
-- Export Date: 2025-08-06 09:12:22
+- Export Date: 2025-08-06 10:45:54
 - Model Type: LogisticRegression
 - Training Samples: 1000
 

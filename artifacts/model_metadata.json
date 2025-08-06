@@ -1,7 +1,7 @@
 {
   "model_name": "sample_intrusion_detector",
   "version": "1.0.0",
-  "export_date": "2025-08-06T09:12:22.613378",
+  "export_date": "2025-08-06T10:45:54.590219",
   "model_files": [
     "/home/mariusz/Desktop/Intrusion-detector/artifacts/model.joblib",
     "/home/mariusz/Desktop/Intrusion-detector/artifacts/model.pkl"
