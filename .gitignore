@@ -21,8 +21,10 @@ wheels/
 *.egg
 
 # Virtual Environment
-venv/
+.env
+.venv
 env/
+venv/
 ENV/
 
 # IDE
@@ -30,12 +32,50 @@ ENV/
 .vscode/
 *.swp
 *.swo
+.DS_Store
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+.hypothesis/
+
+# MLflow
+mlruns/
+mlflow.db
+
+# Docker
+.docker/
 
 # Logs
 *.log
+logs/
+
+# Database
+*.sqlite3
+*.db
+
+# Cache
+.cache/
+.mypy_cache/
+.ruff_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Data
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Model artifacts
+model_artifacts/
+
+# OS
+Thumbs.db
 
 # Local development settings
-.env
 .env.local
 
 # Distribution / packaging

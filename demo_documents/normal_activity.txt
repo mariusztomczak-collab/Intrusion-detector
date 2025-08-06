@@ -1,0 +1,24 @@
+System Log - Normal Activity
+        ============================
+        
+        Timestamp: 2024-01-15 10:30:00
+        User: john.doe@company.com
+        Action: Login successful
+        IP Address: 192.168.1.50
+        Location: Office Network
+        
+        Timestamp: 2024-01-15 10:35:00
+        User: john.doe@company.com
+        Action: File access - /home/john/documents/report.pdf
+        Status: Allowed
+        
+        Timestamp: 2024-01-15 10:40:00
+        User: john.doe@company.com
+        Action: Email sent to: sarah.smith@company.com
+        Subject: Weekly Report
+        Status: Delivered
+        
+        Timestamp: 2024-01-15 11:00:00
+        User: john.doe@company.com
+        Action: Logout
+        Status: Successful

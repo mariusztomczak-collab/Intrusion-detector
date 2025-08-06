@@ -1,5 +1,6 @@
-.PHONY: install test lint format run build up down clean
+.PHONY: install test lint format run build up down clean docker-build docker-up docker-down docker-logs
 
+# Development commands
 install:
 	poetry install
 
@@ -7,27 +8,29 @@ test:
 	poetry run pytest tests/
 
 lint:
-	poetry run flake8 src/ tests/
-	poetry run mypy src/ tests/
-	poetry run black --check src/ tests/
-	poetry run isort --check-only src/ tests/
+	poetry run flake8 app tests
+	poetry run black --check app tests
 
 format:
-	poetry run black src/ tests/
-	poetry run isort src/ tests/
+	poetry run black app tests
 
 run:
-	poetry run uvicorn src.api.main:app --reload
+	poetry run uvicorn app.api.main:app --reload --host 0.0.0.0 --port 8000
 
-build:
+# Docker commands
+docker-build:
 	docker-compose build
 
-up:
+docker-up:
 	docker-compose up -d
 
-down:
+docker-down:
 	docker-compose down
 
+docker-logs:
+	docker-compose logs -f
+
+# Cleanup
 clean:
 	find . -type d -name "__pycache__" -exec rm -r {} +
 	find . -type f -name "*.pyc" -delete
@@ -37,5 +40,8 @@ clean:
 	find . -type d -name "*.egg-info" -exec rm -r {} +
 	find . -type d -name "*.egg" -exec rm -r {} +
 	find . -type d -name ".pytest_cache" -exec rm -r {} +
+	find . -type d -name ".coverage" -exec rm -r {} +
+	find . -type d -name "htmlcov" -exec rm -r {} +
 	find . -type d -name ".mypy_cache" -exec rm -r {} +
 	find . -type d -name ".ruff_cache" -exec rm -r {} + 
+	find . -type d -name ".hypothesis" -exec rm -r {} + 

@@ -1,79 +1,93 @@
-# Intrusion Detection Web App
+# Network Intrusion Detection System
 
-A lightweight, Dockerized web application for classifying network traffic as **malicious** or **normal** using a trained machine learning model based on the KD-NSL dataset. Designed for law enforcement professionals, it offers both real-time and batch classification, a simple UI, and REST API endpoints.
+A machine learning-based system for detecting malicious network traffic using the KD-NSL dataset.
 
----
+## Repository Structure
 
-## Table of Contents
+```
+intrusion-detector/
+├── app/                    # Application code
+│   ├── api/               # FastAPI application
+│   │   ├── endpoints/     # API endpoints
+│   │   ├── middleware/    # Custom middleware
+│   │   └── schemas/       # Pydantic models
+│   ├── core/              # Core functionality
+│   │   ├── config/        # Configuration
+│   │   └── supabase/      # Supabase client
+│   └── ml/                # ML pipeline
+│       ├── models/        # Model definitions
+│       ├── preprocessing/ # Data preprocessing
+│       └── training/      # Model training
+├── data/                  # Data directory
+│   ├── raw/              # Raw data files
+│   ├── processed/        # Processed data files
+│   └── test/             # Test data
+├── docs/                  # Documentation
+│   ├── api/              # API documentation
+│   └── db/               # Database documentation
+├── notebooks/            # Jupyter notebooks
+├── scripts/              # Utility scripts
+├── supabase/            # Supabase configuration
+│   └── migrations/      # Database migrations
+├── tests/               # Test files
+│   ├── api/            # API tests
+│   ├── ml/             # ML pipeline tests
+│   └── integration/    # Integration tests
+├── .env.example        # Example environment variables
+├── .gitignore          # Git ignore file
+├── docker-compose.yml  # Docker compose configuration
+├── Dockerfile          # Docker configuration
+├── Makefile           # Build and development commands
+├── pyproject.toml     # Python project configuration
+├── README.md          # This file
+└── requirements.txt    # Python dependencies
+```
 
-1. [Project Description](#project-description)  
-2. [Tech Stack](#tech-stack)  
-3. [Getting Started Locally](#getting-started-locally)  
-4. [Available Scripts](#available-scripts)  
-5. [Project Scope](#project-scope)  
-6. [Project Status](#project-status)  
-7. [License](#license)
+## Setup
 
----
+1. Create and activate a virtual environment:
+  ```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
 
-## Project Description
-
-This web-based platform enables users to detect malicious network activity using a pre-trained ML model. The UI is tailored for ease-of-use by non-technical users and offers immediate feedback on uploaded data. It supports:
-
-- Real-time single request classification via UI (Gradio).
-- Batch classification through REST API (FastAPI).
-- Local deployment with Docker for secure offline usage.
-
-Use cases include automated event analysis in law enforcement and cybersecurity auditing.
-
----
-
-## Tech Stack
-
-### Frontend
-- **Gradio**: Simple, Python-native UI framework.
-
-### Backend
-- **FastAPI**: Fast, type-checked REST API framework.
-- **Pydantic**: Input validation and schema definition.
-- **Authentication**: HTTP Basic Auth or JWT (local user management).
-
-### ML Model
-- Trained offline and integrated as a microservice or local callable.
-- Formats: `.pkl`, `.joblib`, or `.onnx`.
-
-### Monitoring
-- **MLflow**: Internal tracking for experiments and model performance metrics (not exposed to end-users).
-
-### Database
-- **PostgreSQL**: Stores user history, requests/responses, and metadata.
-
-### Containerization & DevOps
-- **Docker + Docker Compose**: Local development and service isolation.
-- **GitHub Actions**: CI/CD for testing and deployment.
-- **DigitalOcean**: Hosting via Docker Droplet or App Platform.
-
----
-
-## Getting Started Locally
-
-### Prerequisites
-- [Docker](https://www.docker.com/)
-- [Docker Compose](https://docs.docker.com/compose/)
-
-### Steps
-
+2. Install dependencies:
 ```bash
-# Clone the repository
-git clone https://github.com/your-username/intrusion-detector.git
-cd intrusion-detector
+pip install -r requirements.txt
+```
 
-# Start the services
-docker-compose up --build
+3. Set up environment variables:
+```bash
+cp .env.example .env
+# Edit .env with your configuration
+```
+
+4. Start the services:
+```bash
+# Start MLflow server
+mlflow server --host 0.0.0.0 --port 5000
+
+# Start FastAPI application
+uvicorn app.api.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 ## Development
 
-- Use `black` for code formatting
-- Use `flake8` for linting
-- Use `
+- Run tests: `make test`
+- Format code: `make format`
+- Lint code: `make lint`
+
+## API Documentation
+
+Once the application is running, visit:
+- Swagger UI: http://localhost:8000/docs
+- ReDoc: http://localhost:8000/redoc
+
+## MLflow
+
+The MLflow server is available at:
+- MLflow UI: http://localhost:5000
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.

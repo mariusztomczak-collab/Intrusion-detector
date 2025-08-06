@@ -71,6 +71,19 @@ Obecnie funkcjonariusze analizują dane o ruchu sieciowym ręcznie, co jest czas
   - Dane MLflow są niedostępne dla użytkowników końcowych.
   - Logi aplikacji zapisywane są w lokalnych plikach.
 
+## US-007: Bezpieczny dostęp i uwierzytelnianie
+
+- Tytuł: Bezpieczny dostęp
+- Opis: Jako użytkownik chcę mieć możliwość rejestracji i logowania się do systemu w sposób zapewniający bezpieczeństwo moich danych.
+- Kryteria akceptacji:
+  - Logowanie i rejestracja odbywają się na dedykowanych stronach.
+  - Logowanie wymaga podania adresu email i hasła.
+  - Rejestracja wymaga podania adresu email, hasła i potwierdzenia hasła.
+  
+  - Użytkownik NIE MOŻE korzystać z funkcji aplikacji bez logowania się do systemu (US-003).
+  
+  - Nie korzystamy z zewnętrznych serwisów logowania (np. Google, GitHub).
+  - Odzyskiwanie hasła powinno być możliwe.
 ## 6. Metryki sukcesu
 - Dokładność klasyfikacji powyżej 90% na danych testowych.
 - Precyzja i recall powyżej 85%.

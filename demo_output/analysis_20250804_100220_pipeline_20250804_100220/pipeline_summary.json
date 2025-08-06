@@ -1,0 +1,14 @@
+{
+  "pipeline_id": "pipeline_20250804_100220",
+  "document_name": "malicious_activity.txt",
+  "processing_time": 0.0012,
+  "created_at": "2025-08-04T10:02:20.669128",
+  "classification": {
+    "is_malicious": true,
+    "confidence": 0.9,
+    "risk_score": 1.0
+  },
+  "entities_extracted": 45,
+  "threats_detected": 18,
+  "recommendations_generated": 3
+}

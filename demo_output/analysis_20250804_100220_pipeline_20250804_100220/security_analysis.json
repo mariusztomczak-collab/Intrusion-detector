@@ -1,0 +1,46 @@
+{
+  "analysis_id": "analysis_20250804_100220",
+  "document_name": "malicious_activity.txt",
+  "created_at": "2025-08-04T10:02:20.669119",
+  "classification": {
+    "is_malicious": true,
+    "confidence": 0.9,
+    "risk_score": 1.0,
+    "classification_reason": "High risk score (1.00) indicates malicious activity",
+    "detected_threats": [
+      "Suspicious IP address: 192.168.1.100",
+      "Malicious domain: malware.example.com",
+      "Malicious domain: malware.example.com",
+      "Malicious action detected: attack",
+      "Malicious action detected: MALWARE",
+      "Malicious action detected: malware",
+      "Malicious action detected: malware",
+      "Malicious action detected: Trojan",
+      "Malicious action detected: Exploit",
+      "Malicious action detected: BACKDOOR",
+      "Malicious action detected: RANSOMWARE",
+      "Malicious action detected: PRIVILEGE ESCALATION",
+      "Suspicious activity: suspicious",
+      "Suspicious activity: suspicious",
+      "Suspicious activity: blocked",
+      "Suspicious activity: blocked",
+      "Suspicious activity: quarantined",
+      "Suspicious activity: DETECTED"
+    ]
+  },
+  "llm_analysis": "\n            SECURITY ANALYSIS - MALICIOUS ACTIVITY DETECTED\n            \n            Document: malicious_activity.txt\n            Risk Score: 1.00\n            Confidence: 0.90\n            \n            THREAT ASSESSMENT:\n            - High-risk security incident requiring immediate attention\n            - Multiple threat indicators detected\n            - Potential system compromise or data breach\n            \n            IMMEDIATE ACTIONS REQUIRED:\n            1. Isolate affected systems from network\n            2. Preserve evidence and logs\n            3. Notify security team and management\n            4. Begin incident response procedures\n            5. Block identified malicious IPs/domains\n            \n            DETAILED RECOMMENDATIONS:\n            - Conduct thorough system forensics\n            - Review and update security controls\n            - Implement enhanced monitoring\n            - Update threat intelligence feeds\n            - Conduct post-incident review\n            \n            RISK MITIGATION:\n            - Implement zero-trust architecture\n            - Enhance endpoint detection and response\n            - Regular security awareness training\n            - Continuous vulnerability management\n            ",
+  "detailed_recommendations": [
+    "Conduct thorough system forensics",
+    "Review and update security controls",
+    "Implement enhanced monitoring"
+  ],
+  "threat_assessment": "Threat assessment based on classification results.",
+  "incident_response_steps": [],
+  "risk_mitigation_strategies": [
+    "Implement zero-trust architecture",
+    "Enhance endpoint detection and response",
+    "Regular security awareness training",
+    "Continuous vulnerability management"
+  ],
+  "executive_summary": "EXECUTIVE SECURITY SUMMARY\n        \n        Incident ID: analysis_20250804_100220\n        Document: malicious_activity.txt\n        Date: 2025-08-04 10:02:20\n        \n        CLASSIFICATION:\n        - Status: MALICIOUS\n        - Confidence: 0.90\n        - Risk Score: 1.00\n        \n        KEY FINDINGS:\n        Threat assessment based on classification results.\n        \n        IMMEDIATE ACTIONS:\n        \n        \n        RECOMMENDATIONS:\n        - Conduct thorough system forensics\n- Review and update security controls\n- Implement enhanced monitoring\n        \n        NEXT STEPS:\n        - Review detailed analysis report\n        - Implement recommended actions\n        - Schedule follow-up assessment\n        - Update security procedures as needed"
+}

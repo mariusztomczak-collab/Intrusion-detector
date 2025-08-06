@@ -1,0 +1,36 @@
+{
+  "is_malicious": true,
+  "confidence": 0.9,
+  "risk_score": 1.0,
+  "classification_reason": "High risk score (1.00) indicates malicious activity",
+  "detected_threats": [
+    "Suspicious IP address: 192.168.1.100",
+    "Malicious domain: malware.example.com",
+    "Malicious domain: malware.example.com",
+    "Malicious action detected: attack",
+    "Malicious action detected: MALWARE",
+    "Malicious action detected: malware",
+    "Malicious action detected: malware",
+    "Malicious action detected: Trojan",
+    "Malicious action detected: Exploit",
+    "Malicious action detected: BACKDOOR",
+    "Malicious action detected: RANSOMWARE",
+    "Malicious action detected: PRIVILEGE ESCALATION",
+    "Suspicious activity: suspicious",
+    "Suspicious activity: suspicious",
+    "Suspicious activity: blocked",
+    "Suspicious activity: blocked",
+    "Suspicious activity: quarantined",
+    "Suspicious activity: DETECTED"
+  ],
+  "recommended_actions": [
+    "Immediate investigation required",
+    "Consider blocking suspicious IPs/domains",
+    "Enable enhanced monitoring",
+    "Investigate network traffic from suspicious IPs",
+    "Block access to malicious domains",
+    "Review system logs for related activities",
+    "Update threat intelligence feeds"
+  ],
+  "classified_at": "2025-08-04T10:02:20.668879"
+}

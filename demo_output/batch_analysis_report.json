@@ -1,0 +1,97 @@
+{
+  "report_generated_at": "2025-08-04T10:02:20.675980",
+  "total_documents": 3,
+  "processing_summary": {
+    "total_processing_time": 0.004506,
+    "average_processing_time": 0.0015019999999999999,
+    "successful_analyses": 3
+  },
+  "classification_summary": {
+    "malicious_count": 3,
+    "suspicious_count": 0,
+    "normal_count": 0
+  },
+  "threat_summary": {
+    "total_threats_detected": 29,
+    "unique_threats": [
+      "Malicious action detected: RANSOMWARE",
+      "Malicious domain: malware.example.com",
+      "Suspicious activity: Unusual",
+      "Malicious action detected: Privilege escalation",
+      "Suspicious activity: quarantined",
+      "Suspicious IP address: 192.168.1.100",
+      "Suspicious activity: blocked",
+      "Malicious action detected: attack",
+      "Suspicious activity: Alert",
+      "Malicious action detected: malware",
+      "Suspicious activity: Blocked",
+      "Suspicious activity: Detected",
+      "Suspicious activity: failed login",
+      "Malicious action detected: MALWARE",
+      "Suspicious activity: DETECTED",
+      "Malicious action detected: Trojan",
+      "Malicious action detected: Exploit",
+      "Suspicious activity: Suspicious",
+      "Malicious action detected: PRIVILEGE ESCALATION",
+      "Malicious action detected: BACKDOOR",
+      "Suspicious activity: suspicious"
+    ]
+  },
+  "document_analyses": [
+    {
+      "pipeline_id": "pipeline_20250804_100220",
+      "document_name": "normal_activity.txt",
+      "risk_score": 0.6819354838709677,
+      "is_malicious": true,
+      "threats_detected": [],
+      "processing_time": 0.002186
+    },
+    {
+      "pipeline_id": "pipeline_20250804_100220",
+      "document_name": "suspicious_activity.txt",
+      "risk_score": 1.0,
+      "is_malicious": true,
+      "threats_detected": [
+        "Malicious domain: malware.example.com",
+        "Malicious action detected: malware",
+        "Malicious action detected: Privilege escalation",
+        "Suspicious activity: Unusual",
+        "Suspicious activity: Suspicious",
+        "Suspicious activity: suspicious",
+        "Suspicious activity: failed login",
+        "Suspicious activity: Blocked",
+        "Suspicious activity: blocked",
+        "Suspicious activity: Detected",
+        "Suspicious activity: Alert"
+      ],
+      "processing_time": 0.00112
+    },
+    {
+      "pipeline_id": "pipeline_20250804_100220",
+      "document_name": "malicious_activity.txt",
+      "risk_score": 1.0,
+      "is_malicious": true,
+      "threats_detected": [
+        "Suspicious IP address: 192.168.1.100",
+        "Malicious domain: malware.example.com",
+        "Malicious domain: malware.example.com",
+        "Malicious action detected: attack",
+        "Malicious action detected: MALWARE",
+        "Malicious action detected: malware",
+        "Malicious action detected: malware",
+        "Malicious action detected: Trojan",
+        "Malicious action detected: Exploit",
+        "Malicious action detected: BACKDOOR",
+        "Malicious action detected: RANSOMWARE",
+        "Malicious action detected: PRIVILEGE ESCALATION",
+        "Suspicious activity: suspicious",
+        "Suspicious activity: suspicious",
+        "Suspicious activity: blocked",
+        "Suspicious activity: blocked",
+        "Suspicious activity: quarantined",
+        "Suspicious activity: DETECTED"
+      ],
+      "processing_time": 0.0012
+    }
+  ]
+}

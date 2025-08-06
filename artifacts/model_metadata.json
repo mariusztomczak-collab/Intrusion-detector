@@ -1,0 +1,32 @@
+{
+  "model_name": "sample_intrusion_detector",
+  "version": "1.0.0",
+  "export_date": "2025-08-06T09:12:22.613378",
+  "model_files": [
+    "/home/mariusz/Desktop/Intrusion-detector/artifacts/model.joblib",
+    "/home/mariusz/Desktop/Intrusion-detector/artifacts/model.pkl"
+  ],
+  "preprocessor_files": [
+    "/home/mariusz/Desktop/Intrusion-detector/artifacts/preprocessor.joblib",
+    "/home/mariusz/Desktop/Intrusion-detector/artifacts/preprocessor.pkl"
+  ],
+  "features": {
+    "numerical": [
+      "count",
+      "serror_rate",
+      "srv_serror_rate",
+      "same_srv_rate",
+      "dst_host_srv_count",
+      "dst_host_same_srv_rate",
+      "dst_host_serror_rate",
+      "dst_host_srv_serror_rate"
+    ],
+    "categorical": [
+      "logged_in",
+      "flag"
+    ]
+  },
+  "model_type": "LogisticRegression",
+  "training_samples": 1000,
+  "note": "This is a sample model for testing distribution functionality"
+}
