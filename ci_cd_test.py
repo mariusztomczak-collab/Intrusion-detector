@@ -7,7 +7,7 @@ This file will be used to test the GitHub Actions pipeline.
 import sys
 
 
-def test_ci_cd_function() -> bool:
+def verify_ci_cd_function() -> bool:
     """Test function to verify CI/CD workflow."""
     print("✅ CI/CD workflow test function executed successfully!")
     return True
@@ -19,7 +19,7 @@ def main() -> int:
     print("=" * 30)
 
     # Test basic functionality
-    result = test_ci_cd_function()
+    result = verify_ci_cd_function()
 
     if result:
         print("✅ All tests passed!")
