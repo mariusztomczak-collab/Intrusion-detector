@@ -8,6 +8,10 @@ A machine learning-based network intrusion detection system with a modern web in
 
 ## 🚀 Quick Start
 
+### For End Users (External Users)
+**Want to run the application locally?** Check out our **[User Guide](docs/USER_GUIDE.md)** for a simple 5-minute setup!
+
+### For Developers
 ### Prerequisites
 - Python 3.12+
 - Docker & Docker Compose

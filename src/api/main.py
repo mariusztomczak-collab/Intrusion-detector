@@ -2,10 +2,14 @@ import sys
 from pathlib import Path
 from datetime import datetime
 import uuid
+from dotenv import load_dotenv
 
 # Add the project root to Python path
 project_root = Path(__file__).parent.parent.parent
 sys.path.append(str(project_root))
+
+# Load environment variables from .env file
+load_dotenv(project_root / ".env")
 
 from fastapi import FastAPI, HTTPException, BackgroundTasks, Request, Depends, Query
 from fastapi.middleware.cors import CORSMiddleware
@@ -24,6 +28,7 @@ from src.api.schemas import (
     ErrorReport
 )
 from src.ml.pipeline.preprocessing.preprocessor import DataPreprocessor
+from sklearn.compose import ColumnTransformer
 import joblib
 import os
 import logging
@@ -155,10 +160,19 @@ async def startup_event():
         for preprocessor_path in preprocessor_paths:
             if preprocessor_path.exists():
                 try:
-                    preprocessor = DataPreprocessor()
                     column_transformer = joblib.load(preprocessor_path)
-                    preprocessor.preprocessor = column_transformer
-                    logger.info(f"Successfully loaded preprocessor from {preprocessor_path}")
+                    
+                    # Check if it's a ColumnTransformer and wrap it
+                    if isinstance(column_transformer, ColumnTransformer):
+                        from src.ml.pipeline.preprocessing.preprocessor import ColumnTransformerWrapper
+                        preprocessor = ColumnTransformerWrapper(column_transformer)
+                        logger.info(f"Successfully loaded and wrapped ColumnTransformer from {preprocessor_path}")
+                    else:
+                        # Assume it's a DataPreprocessor
+                        preprocessor = DataPreprocessor()
+                        preprocessor.preprocessor = column_transformer
+                        logger.info(f"Successfully loaded DataPreprocessor from {preprocessor_path}")
+                    
                     preprocessor_loaded = True
                     break
                 except Exception as e:
@@ -267,6 +281,38 @@ async def analyze_single_traffic(
     except Exception as e:
         logger.error(f"Error analyzing traffic: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/decisions/test", response_model=DecisionResponse)
+async def test_single_traffic(
+    request: SingleDecisionRequest
+):
+    """Test endpoint for single traffic analysis without authentication."""
+    try:
+        if model is None or preprocessor is None:
+            raise HTTPException(status_code=500, detail="Model or preprocessor not initialized")
+        
+        # Convert input to DataFrame
+        features_df = pd.DataFrame([request.features.dict()])
+        
+        # Preprocess the traffic data
+        features = preprocessor.transform(features_df)
+        
+        # Make prediction
+        prediction = model.predict(features)[0]
+        result = ClassificationResult.MALICIOUS if prediction == 1 else ClassificationResult.NORMAL
+        
+        # Prepare response
+        response = DecisionResponse(
+            classification_result=result,
+            timestamp=datetime.utcnow(),
+            correlation_id=request.correlation_id
+        )
+        
+        return response
+        
+    except Exception as e:
+        logger.error(f"Error analyzing traffic: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
 
 @app.post("/decisions/batch", response_model=BatchDecisionResponse)
 async def analyze_batch_traffic(

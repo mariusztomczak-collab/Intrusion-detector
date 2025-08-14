@@ -6,6 +6,8 @@ Welcome to the Intrusion Detector documentation! This guide will help you naviga
 
 ### **Getting Started**
 - **[Main README](../README.md)** - Project overview and quick start
+- **[User Guide](USER_GUIDE.md)** - **Simple guide for external users** 🎯
+- **[CI/CD Guide](CI_CD_GUIDE.md)** - **Automated transfer and deployment** 🚀
 - **[Deployment Guide](deployment/DEPLOYMENT_GUIDE.md)** - Production deployment instructions
 - **[Model Distribution](deployment/MODEL_DISTRIBUTION_SOLUTION.md)** - ML model distribution solution
 
@@ -50,6 +52,19 @@ docs/
 ```
 
 ## 🎯 Documentation Categories
+
+### **🎯 End Users & Getting Started**
+Documents for users who want to run the application locally.
+
+**Key Documents:**
+- **[User Guide](USER_GUIDE.md)** - **Simple 5-minute setup guide for external users** 🎯
+
+**Topics Covered:**
+- Quick start instructions
+- System requirements
+- Troubleshooting common issues
+- First-time usage guide
+- Application management
 
 ### **🚀 Deployment & Operations**
 Documents related to deploying and operating the application in production environments.
@@ -140,7 +155,7 @@ API design and integration documentation.
 - **API**: Check `api/` directory
 
 ### **By Audience**
-- **End Users**: Start with [Deployment Guide](deployment/DEPLOYMENT_GUIDE.md)
+- **End Users**: Start with **[User Guide](USER_GUIDE.md)** 🎯
 - **Developers**: Start with [Development Guide](development/)
 - **DevOps**: Start with [Deployment Guide](deployment/DEPLOYMENT_GUIDE.md)
 - **Architects**: Start with [System Architecture](architecture/intrusion-detector-stack.md)

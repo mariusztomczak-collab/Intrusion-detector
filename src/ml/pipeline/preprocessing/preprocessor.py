@@ -10,6 +10,80 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+class ColumnTransformerWrapper:
+    """
+    Wrapper for saved ColumnTransformer objects to provide consistent interface.
+    This handles the case where the preprocessor was saved as a ColumnTransformer
+    rather than a DataPreprocessor object.
+    """
+    
+    def __init__(self, column_transformer: ColumnTransformer):
+        """
+        Initialize wrapper with a saved ColumnTransformer.
+        
+        Args:
+            column_transformer: The saved ColumnTransformer object
+        """
+        self.preprocessor = column_transformer
+        self.selected_features = []
+        
+        # Extract feature names from the transformer
+        for name, transformer, features in column_transformer.transformers_:
+            self.selected_features.extend(features)
+        
+        logger.info(f"Initialized ColumnTransformerWrapper with features: {self.selected_features}")
+    
+    def transform(self, X: pd.DataFrame) -> np.ndarray:
+        """
+        Transform data using the wrapped ColumnTransformer.
+        
+        Args:
+            X (pd.DataFrame): Input features to transform
+            
+        Returns:
+            np.ndarray: Transformed features
+        """
+        if self.preprocessor is None:
+            raise ValueError("Preprocessor has not been initialized")
+            
+        # Transform the data
+        X_transformed = self.preprocessor.transform(X)
+        return X_transformed
+    
+    def get_feature_names(self) -> List[str]:
+        """
+        Get names of features after preprocessing.
+        
+        Returns:
+            list: List of feature names
+        """
+        if self.preprocessor is None:
+            raise ValueError("Preprocessor has not been initialized")
+            
+        try:
+            # Use the ColumnTransformer's get_feature_names_out method
+            return list(self.preprocessor.get_feature_names_out())
+        except AttributeError:
+            # Fallback for older scikit-learn versions
+            feature_names = []
+            for name, transformer, features in self.preprocessor.transformers_:
+                if name == 'num':
+                    feature_names.extend(features)
+                elif name == 'cat':
+                    # Handle OneHotEncoder directly
+                    if hasattr(transformer, 'categories_'):
+                        for i, feature in enumerate(features):
+                            categories = transformer.categories_[i]
+                            # Skip the first category if drop='first' was used
+                            if hasattr(transformer, 'drop') and transformer.drop == 'first':
+                                categories = categories[1:]
+                            feature_names.extend([f"{feature}_{val}" for val in categories])
+                    else:
+                        # Fallback: just use the original feature names
+                        feature_names.extend(features)
+            
+            return feature_names
+
 class DataPreprocessor:
     def __init__(self):
         """
@@ -107,9 +181,7 @@ class DataPreprocessor:
     
     def fit_transform(self, X: pd.DataFrame, y: Optional[pd.Series] = None) -> np.ndarray:
         """
-        Fit preprocessor and transform data in one step.
-        
-        Args:
+        Fit preprocessor and transform data in one step
             X (pd.DataFrame): Input features
             y (pd.Series, optional): Target variable (not used)
             
@@ -137,16 +209,30 @@ class DataPreprocessor:
             if name == 'num':
                 feature_names.extend(features)
             elif name == 'cat':
-                # Get one-hot encoded feature names
-                encoder = transformer.named_steps['onehot']
-                encoded_features = []
-                for i, feature in enumerate(features):
-                    # Only keep the SF flag feature
-                    if feature == 'flag':
-                        encoded_features.append('flag_SF')
+                # Check if transformer is a Pipeline or direct transformer
+                if hasattr(transformer, 'named_steps'):
+                    # It's a Pipeline
+                    encoder = transformer.named_steps['onehot']
+                    encoded_features = []
+                    for i, feature in enumerate(features):
+                        # Only keep the SF flag feature
+                        if feature == 'flag':
+                            encoded_features.append('flag_SF')
+                        else:
+                            encoded_features.extend([f"{feature}_{val}" for val in encoder.categories_[i]])
+                    feature_names.extend(encoded_features)
+                else:
+                    # It's a direct transformer (OneHotEncoder)
+                    if hasattr(transformer, 'categories_'):
+                        for i, feature in enumerate(features):
+                            categories = transformer.categories_[i]
+                            # Skip the first category if drop='first' was used
+                            if hasattr(transformer, 'drop') and transformer.drop == 'first':
+                                categories = categories[1:]
+                            feature_names.extend([f"{feature}_{val}" for val in categories])
                     else:
-                        encoded_features.extend([f"{feature}_{val}" for val in encoder.categories_[i]])
-                feature_names.extend(encoded_features)
+                        # Fallback: just use the original feature names
+                        feature_names.extend(features)
             
         return feature_names
 
