@@ -115,8 +115,12 @@ stop_service_by_pattern() {
     local pids=$(pgrep -f "$pattern" 2>/dev/null || true)
     
     if [ -n "$pids" ]; then
-        echo "$pids" | while read -r pid; do
-            kill_process_gracefully "$pid" "$service_name"
+        # Convert to array and process each PID
+        local pid_array=($pids)
+        for pid in "${pid_array[@]}"; do
+            if [ -n "$pid" ] && [ "$pid" -gt 0 ]; then
+                kill_process_gracefully "$pid" "$service_name"
+            fi
         done
     else
         print_warning "No $service_name processes found"
@@ -209,6 +213,21 @@ stop_local_services() {
     stop_service_by_pattern "mlflow server" "MLflow"
     stop_service_by_pattern "gunicorn.*mlflow" "MLflow Worker"
     
+    # Additional aggressive cleanup for stubborn processes
+    print_step "Performing aggressive cleanup..."
+    
+    # Kill any remaining Python processes that might be related
+    local python_pids=$(pgrep -f "python.*(uvicorn|gradio|mlflow|run_unified)" 2>/dev/null || true)
+    if [ -n "$python_pids" ]; then
+        local pid_array=($python_pids)
+        for pid in "${pid_array[@]}"; do
+            if [ -n "$pid" ] && [ "$pid" -gt 0 ]; then
+                print_warning "Force killing remaining Python process PID: $pid"
+                kill -9 "$pid" 2>/dev/null || true
+            fi
+        done
+    fi
+    
     # Wait a moment for processes to fully terminate
     sleep 3
 }
@@ -232,16 +251,61 @@ check_final_status() {
         fi
     done
     
-    # Check for any remaining processes
-    local remaining_processes=$(pgrep -f "(uvicorn|gradio|mlflow|run_unified)" 2>/dev/null || true)
+    # Check for any remaining processes with more specific patterns
+    print_step "Checking for remaining processes..."
     
-    if [ -n "$remaining_processes" ]; then
-        print_warning "Some processes may still be running:"
-        echo "$remaining_processes" | while read -r pid; do
-            local cmd=$(ps -p "$pid" -o command= 2>/dev/null || echo "Unknown")
-            echo "  PID $pid: $cmd"
+    local remaining_patterns=(
+        "uvicorn.*src.api.main"
+        "run_unified_app.py"
+        "mlflow server"
+        "gunicorn.*mlflow"
+        "python.*uvicorn"
+        "python.*gradio"
+    )
+    
+    local any_remaining=false
+    
+    for pattern in "${remaining_patterns[@]}"; do
+        local pids=$(pgrep -f "$pattern" 2>/dev/null || true)
+        if [ -n "$pids" ]; then
+            print_warning "Found remaining processes matching '$pattern':"
+            local pid_array=($pids)
+            for pid in "${pid_array[@]}"; do
+                if [ -n "$pid" ] && [ "$pid" -gt 0 ]; then
+                    local cmd=$(ps -p "$pid" -o command= 2>/dev/null || echo "Unknown")
+                    echo "  PID $pid: $cmd"
+                    any_remaining=true
+                fi
+            done
+        fi
+    done
+    
+    if [ "$any_remaining" = true ]; then
+        print_warning "Some processes are still running - attempting final cleanup..."
+        
+        # Final aggressive cleanup
+        for pattern in "${remaining_patterns[@]}"; do
+            local pids=$(pgrep -f "$pattern" 2>/dev/null || true)
+            if [ -n "$pids" ]; then
+                local pid_array=($pids)
+                for pid in "${pid_array[@]}"; do
+                    if [ -n "$pid" ] && [ "$pid" -gt 0 ]; then
+                        print_warning "Final force kill of PID $pid"
+                        kill -9 "$pid" 2>/dev/null || true
+                    fi
+                done
+            fi
         done
-        all_ports_free=false
+        
+        # Wait and check again
+        sleep 2
+        local final_check=$(pgrep -f "(uvicorn|gradio|mlflow|run_unified)" 2>/dev/null || true)
+        if [ -n "$final_check" ]; then
+            print_error "Some processes still running after final cleanup"
+            all_ports_free=false
+        else
+            print_success "All processes successfully terminated after final cleanup"
+        fi
     fi
     
     if [ "$all_ports_free" = true ]; then
