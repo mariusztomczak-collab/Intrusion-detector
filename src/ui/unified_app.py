@@ -176,6 +176,44 @@ class UnifiedApp:
             logger.error(f"Error during logout: {str(e)}")
             return None, gr.update(selected=0)
 
+    def handle_logout_with_ui_reset(self, auth_state):
+        """Handle logout with complete UI reset."""
+        try:
+            if auth_state and auth_state.get("is_authenticated"):
+                # Call logout API
+                headers = {"Authorization": f"Bearer {auth_state['token']}"}
+
+                response = requests.post(
+                    f"{self.api_base_url}/auth/logout", headers=headers
+                )
+                logger.info("User logged out successfully")
+
+            # Return to login state and navigate to login tab
+            # Also reset all user-related components
+            return (
+                None,  # auth_state
+                gr.update(selected=0),  # tabs
+                "👤 Zalogowany jako: Nie zalogowany",  # user_info
+                "",  # login_email (clear email field)
+                "",  # login_password (clear password field)
+                "",  # login_error (clear error messages)
+                "",  # login_status (clear status messages)
+                "",  # output (clear analysis results)
+            )
+
+        except Exception as e:
+            logger.error(f"Error during logout: {str(e)}")
+            return (
+                None,  # auth_state
+                gr.update(selected=0),  # tabs
+                "👤 Zalogowany jako: Nie zalogowany",  # user_info
+                "",  # login_email
+                "",  # login_password
+                "",  # login_error
+                "",  # login_status
+                "",  # output
+            )
+
     def classify_traffic(
         self,
         logged_in,
@@ -598,8 +636,8 @@ class UnifiedApp:
 
             # Connect logout with navigation to login
             logout_button.click(
-                fn=self.handle_logout, inputs=[auth_state], outputs=[auth_state, tabs]
-            ).then(fn=lambda: "👤 Zalogowany jako: Nie zalogowany", outputs=user_info)
+                fn=self.handle_logout_with_ui_reset, inputs=[auth_state], outputs=[auth_state, tabs, user_info, login_email, login_password, login_error, login_status, output]
+            )
 
             # Connect traffic analysis (protected)
             analyze_btn.click(
