@@ -2,10 +2,13 @@
 Unit tests for FastAPI application endpoints.
 """
 
-import pytest
 from unittest.mock import Mock, patch
+
+import pytest
 from fastapi.testclient import TestClient
+
 from src.api.main import app
+
 
 class TestAPIEndpoints:
     """Test suite for API endpoints."""

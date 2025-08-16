@@ -2,9 +2,11 @@
 Unit tests for UI components (Gradio interface).
 """
 
-import pytest
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import MagicMock, Mock, patch
+
 import gradio as gr
+import pytest
+
 
 class TestUnifiedAppUI:
     """Test suite for UnifiedApp UI components."""

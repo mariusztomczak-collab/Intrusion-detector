@@ -1,6 +1,9 @@
-import pytest
 from unittest.mock import Mock, patch
+
+import pytest
+
 from src.ui.unified_app import UnifiedApp
+
 
 class TestUnifiedApp:
     """Unit tests for UnifiedApp class"""

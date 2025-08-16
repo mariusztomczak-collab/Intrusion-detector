@@ -2,11 +2,12 @@
 Pytest configuration and common fixtures for the Intrusion Detector test suite.
 """
 
-import pytest
-import tempfile
 import os
-from unittest.mock import Mock, patch
+import tempfile
 from datetime import datetime
+from unittest.mock import Mock, patch
+
+import pytest
 
 
 @pytest.fixture

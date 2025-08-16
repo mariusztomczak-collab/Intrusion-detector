@@ -2,10 +2,13 @@
 Unit tests for database operations and Supabase integration.
 """
 
-import pytest
-from unittest.mock import Mock, patch
 from datetime import datetime
+from unittest.mock import Mock, patch
+
+import pytest
+
 from src.core.supabaseclient import get_supabase_client
+
 
 class TestSupabaseClient:
     """Test suite for Supabase client operations."""
@@ -152,7 +155,7 @@ class TestDataValidation:
     def test_network_traffic_features_validation(self):
         """Test network traffic features validation."""
         from src.api.schemas import NetworkTrafficFeatures
-        
+
         # Valid data
         valid_data = {
             "logged_in": True,
@@ -174,9 +177,10 @@ class TestDataValidation:
     
     def test_network_traffic_features_invalid(self):
         """Test network traffic features with invalid data."""
-        from src.api.schemas import NetworkTrafficFeatures
         from pydantic import ValidationError
-        
+
+        from src.api.schemas import NetworkTrafficFeatures
+
         # Invalid data - missing required fields
         invalid_data = {
             "logged_in": True,
@@ -189,9 +193,10 @@ class TestDataValidation:
     
     def test_decision_response_validation(self):
         """Test decision response validation."""
-        from src.api.schemas import DecisionResponse
         from datetime import datetime
-        
+
+        from src.api.schemas import DecisionResponse
+
         # Valid response data with all required fields
         valid_data = {
             "classification_result": "NORMAL",

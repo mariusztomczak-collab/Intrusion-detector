@@ -1,8 +1,11 @@
-import pytest
+from unittest.mock import Mock, patch
+
 import numpy as np
 import pandas as pd
-from unittest.mock import Mock, patch
+import pytest
+
 from src.ml.pipeline.preprocessing.preprocessor import DataPreprocessor
+
 
 class TestDataPreprocessor:
     """Unit tests for DataPreprocessor class"""
