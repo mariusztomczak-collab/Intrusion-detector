@@ -23,6 +23,23 @@ DOCKER_MODE=${DOCKER_MODE:-"auto"}
 # Create logs directory if it doesn't exist
 mkdir -p "$LOG_DIR"
 
+# Function to check Python version
+check_python_version() {
+    print_step "Checking Python version..."
+    
+    local python_version=$(python --version 2>&1 | grep -oE '[0-9]+\.[0-9]+' | head -1)
+    local major_version=$(echo "$python_version" | cut -d. -f1)
+    local minor_version=$(echo "$python_version" | cut -d. -f2)
+    
+    if [ "$major_version" -lt 3 ] || ([ "$major_version" -eq 3 ] && [ "$minor_version" -lt 8 ]); then
+        print_error "Python 3.8+ is required. Current version: $python_version"
+        print_status "Please upgrade Python and try again."
+        exit 1
+    fi
+    
+    print_success "Python version: $python_version (✓ compatible)"
+}
+
 # Function to print colored output
 print_status() {
     echo -e "${BLUE}[INFO]${NC} $1"
@@ -131,6 +148,31 @@ check_model_files() {
     fi
 }
 
+# Function to check required files and dependencies
+check_required_files() {
+    print_step "Checking required application files..."
+    
+    local required_files=("run_unified_app.py" "src/api/main.py" "src/ui/unified_app.py")
+    local missing_files=()
+    
+    for file in "${required_files[@]}"; do
+        if [ ! -f "$file" ]; then
+            missing_files+=("$file")
+        fi
+    done
+    
+    if [ ${#missing_files[@]} -gt 0 ]; then
+        print_error "Missing required application files:"
+        for file in "${missing_files[@]}"; do
+            echo "  - $file"
+        done
+        print_error "This appears to be an incomplete repository. Please ensure you have downloaded the complete codebase."
+        exit 1
+    fi
+    
+    print_success "All required application files found!"
+}
+
 # Function to start services with Docker
 start_docker_services() {
     print_header "Starting with Docker Compose"
@@ -169,7 +211,8 @@ start_local_services() {
         print_status "Creating virtual environment..."
         python -m venv "$VENV_DIR"
         source "$VENV_DIR/bin/activate"
-        pip install -r requirements.txt
+        print_status "Installing dependencies from pyproject.toml..."
+        pip install -e .
     else
         source "$VENV_DIR/bin/activate"
     fi
@@ -186,7 +229,12 @@ start_local_services() {
     
     if [ ${#missing_packages[@]} -gt 0 ]; then
         print_warning "Installing missing packages: ${missing_packages[*]}"
-        pip install -r requirements.txt
+        print_status "Installing from pyproject.toml (recommended) or requirements.txt..."
+        if [ -f "pyproject.toml" ]; then
+            pip install -e .
+        else
+            pip install -r requirements.txt
+        fi
     fi
     
     # Kill existing processes
@@ -202,8 +250,18 @@ start_local_services() {
     echo $! > "$LOG_DIR/fastapi.pid"
     
     print_step "Starting Gradio UI..."
-    nohup python run_unified_app.py > "$LOG_DIR/gradio.log" 2>&1 &
-    echo $! > "$LOG_DIR/gradio.pid"
+    if [ -f "run_unified_app.py" ]; then
+        nohup python run_unified_app.py > "$LOG_DIR/gradio.log" 2>&1 &
+        echo $! > "$LOG_DIR/gradio.pid"
+    else
+        print_error "run_unified_app.py not found! Cannot start UI."
+        print_status "Stopping FastAPI server..."
+        if [ -f "$LOG_DIR/fastapi.pid" ]; then
+            kill $(cat "$LOG_DIR/fastapi.pid") 2>/dev/null || true
+            rm -f "$LOG_DIR/fastapi.pid"
+        fi
+        exit 1
+    fi
     
     print_success "Local services started!"
     sleep 5
@@ -282,16 +340,39 @@ main() {
                 DOCKER_MODE="local"
                 shift
                 ;;
-            --help|-h)
+            "--help|-h")
                 echo "Usage: $0 [OPTIONS]"
                 echo ""
+                echo "🚀 Intrusion Detector - Quick Start Guide"
+                echo ""
                 echo "Options:"
-                echo "  --docker    Force Docker mode"
-                echo "  --local     Force local development mode"
+                echo "  --docker    Force Docker mode (requires Docker & Docker Compose)"
+                echo "  --local     Force local development mode (requires Python 3.8+)"
                 echo "  --help, -h  Show this help message"
                 echo ""
-                echo "Environment Variables:"
-                echo "  DOCKER_MODE  Set to 'docker' or 'local' to override auto-detection"
+                echo "🌍 First Time Setup:"
+                echo "  1. Clone the repository: git clone <repo-url>"
+                echo "  2. Copy .env.example to .env and add your Supabase credentials"
+                echo "  3. Run: ./start.sh"
+                echo ""
+                echo "🔧 Prerequisites:"
+                echo "  - Python 3.8+ (for local mode)"
+                echo "  - Docker & Docker Compose (for Docker mode)"
+                echo "  - Supabase account and API credentials"
+                echo ""
+                echo "📁 Required Files:"
+                echo "  - .env (with SUPABASE_URL and SUPABASE_KEY)"
+                echo "  - artifacts/ (model files will be auto-created if missing)"
+                echo ""
+                echo "🚀 Quick Start:"
+                echo "  ./start.sh          # Auto-detect best mode"
+                echo "  ./start.sh --local  # Force local Python mode"
+                echo "  ./start.sh --docker # Force Docker mode"
+                echo ""
+                echo "📚 More Info:"
+                echo "  - README.md for detailed documentation"
+                echo "  - .env.example for environment variables"
+                echo "  - docker-compose.prod.yml for Docker configuration"
                 exit 0
                 ;;
             *)
@@ -304,8 +385,10 @@ main() {
     
     # Check prerequisites
     print_step "Checking prerequisites..."
+    check_python_version
     check_env_file
     check_model_files
+    check_required_files
     
     # Determine startup mode
     if [ "$DOCKER_MODE" = "docker" ] || ([ "$DOCKER_MODE" = "auto" ] && check_docker); then

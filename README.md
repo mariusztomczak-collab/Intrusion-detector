@@ -9,7 +9,59 @@ A machine learning-based network intrusion detection system with a modern web in
 ## 🚀 Quick Start
 
 ### For End Users (External Users)
-**Want to run the application locally?** Check out our **[User Guide](docs/USER_GUIDE.md)** for a simple 5-minute setup!
+**Want to run the application locally?** Here's a simple 5-minute setup!
+
+#### 🎯 Prerequisites
+- **Python 3.8+** installed on your system
+- **Git** to clone the repository
+- **Supabase account** (free tier available)
+
+#### 🚀 Quick Setup (5 minutes)
+```bash
+# 1. Clone the repository
+git clone https://github.com/mariusztomczak-collab/Intrusion-detector.git
+cd Intrusion-detector
+
+# 2. Run the setup script (auto-configures everything)
+./setup.sh
+
+# 3. Edit .env file with your Supabase credentials
+# Get these from: https://supabase.com/dashboard/project/[YOUR_PROJECT]/settings/api
+
+# 4. Start the application
+./start.sh
+
+# 5. Open your browser to: http://localhost:7860
+```
+
+#### 🔧 Manual Setup (if you prefer)
+```bash
+# Clone and setup
+git clone https://github.com/mariusztomczak-collab/Intrusion-detector.git
+cd Intrusion-detector
+
+# Copy environment template
+cp .env.example .env
+
+# Edit .env with your Supabase credentials
+nano .env  # or use any text editor
+
+# Start the application
+./start.sh
+```
+
+#### 📱 What You Get
+- 🌐 **Web Interface** at http://localhost:7860
+- 🔧 **API Endpoints** at http://localhost:8000
+- 📊 **API Documentation** at http://localhost:8000/docs
+- 🛡️ **Intrusion Detection** with ML models
+- 🔐 **User Authentication** system
+
+#### 🆘 Need Help?
+- Run `./start.sh --help` for startup options
+- Run `./stop.sh --help` for shutdown options
+- Check the [User Guide](docs/USER_GUIDE.md) for detailed instructions
+- See [Troubleshooting](docs/TROUBLESHOOTING.md) for common issues
 
 ### For Developers
 ### Prerequisites
