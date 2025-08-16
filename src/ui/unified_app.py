@@ -636,7 +636,18 @@ class UnifiedApp:
 
             # Connect logout with navigation to login
             logout_button.click(
-                fn=self.handle_logout_with_ui_reset, inputs=[auth_state], outputs=[auth_state, tabs, user_info, login_email, login_password, login_error, login_status, output]
+                fn=self.handle_logout_with_ui_reset,
+                inputs=[auth_state],
+                outputs=[
+                    auth_state,
+                    tabs,
+                    user_info,
+                    login_email,
+                    login_password,
+                    login_error,
+                    login_status,
+                    output,
+                ],
             )
 
             # Connect traffic analysis (protected)
