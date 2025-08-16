@@ -49,7 +49,7 @@ docs/
 │   └── 📄 ap-implementation-plan.md # API implementation
 └── 📁 db/                         # Database documentation (legacy)
     └── ...                       # Database-related files
-```
+```o transferze
 
 ## 🎯 Documentation Categories
 
