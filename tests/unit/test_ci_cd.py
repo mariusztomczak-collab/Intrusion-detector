@@ -18,8 +18,8 @@ def test_ci_cd_environment():
 
 def test_ci_cd_imports():
     """Test that basic imports work in CI/CD environment."""
-    import sys
     import os
+    import sys
     assert sys.version_info >= (3, 8)
     assert os.name in ['posix', 'nt']
 
@@ -36,9 +36,9 @@ def test_ci_cd_paths():
 def test_ci_cd_dependencies():
     """Test that core dependencies are available."""
     try:
-        import pytest
         import numpy
         import pandas
+        import pytest
         assert True
     except ImportError:
         pytest.skip("Some dependencies not available in CI/CD environment") 
