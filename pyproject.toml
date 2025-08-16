@@ -16,6 +16,7 @@ dependencies = [
     "fastapi>=0.109.0",
     "uvicorn>=0.27.0",
     "pydantic>=2.4.2",
+    "pydantic-settings>=2.0.0",
     "python-dotenv>=1.0.0",
     "supabase>=2.3.0",
     "mlflow>=2.10.0",
@@ -31,13 +32,15 @@ dependencies = [
     "fastapi-cache2>=0.2.1",
     "fastapi-cache2[redis]>=0.2.1",
     "xgboost>=2.0.0",
-    "psycopg2-binary>=2.9.9"
+    "psycopg2-binary>=2.9.9",
+    "gradio>=4.0.0"
 ]
 
 [project.optional-dependencies]
 dev = [
     "pytest>=7.4.3",
     "pytest-cov>=4.1.0",
+    "pytest-xdist>=3.0.0",
     "black>=23.11.0",
     "isort>=5.12.0",
     "flake8>=6.1.0",
