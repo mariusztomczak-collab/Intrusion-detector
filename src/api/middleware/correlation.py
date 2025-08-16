@@ -1,12 +1,14 @@
-from contextvars import ContextVar
-from starlette.types import ASGIApp, Receive, Scope, Send
-from uuid import uuid4
-from starlette.datastructures import MutableHeaders
 import logging
+from contextvars import ContextVar
+from uuid import uuid4
+
+from starlette.datastructures import MutableHeaders
+from starlette.types import ASGIApp, Receive, Scope, Send
 
 logger = logging.getLogger(__name__)
 
 CORRELATION_ID: ContextVar[str] = ContextVar("correlation_id", default="---")
+
 
 class CorrelationIdMiddleware:
     def __init__(self, app: ASGIApp):
@@ -24,4 +26,4 @@ class CorrelationIdMiddleware:
         headers.append(self.header_name, CORRELATION_ID.get())
 
         await self.app(scope, receive, send)
-        return 
+        return
